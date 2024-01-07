@@ -1,8 +1,5 @@
-#!/usr/bin/python3
-
-''' Init '''
-
 from flask import Blueprint
-from .index import *
 
-app_views = Blueprint('app_views', url_prefix='/api/v1')
+app_views = Blueprint('app_views', __name__)
+
+from api.v1.views.index import *
