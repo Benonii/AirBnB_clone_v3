@@ -2,7 +2,7 @@
 
 '''Main app module'''
 
-from flask import Flask
+from flask import Flask, jsonify
 from models import storage
 from api.v1.views import app_views
 from os import getenv
@@ -20,6 +20,13 @@ def teardown(exception):
 
 host = getenv('HBNB_API_HOST')
 port = getenv('HBNB_API_PORT')
+
+
+@app.errorhandler(404)
+def page_not_found(error):
+    '''Returns a JSON 404'''
+    return jsonify({"error": "Not found"})
+
 
 if __name__ == "__main__":
     if not host:
