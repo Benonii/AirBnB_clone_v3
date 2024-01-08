@@ -8,6 +8,7 @@ from models import storage
 from flask import jsonify
 from models.state import State
 
+
 @app_views.route('/states', strict_slashes=False, methods=['GET'])
 def get_states():
     '''Handles a get request for state objects'''
@@ -28,7 +29,8 @@ def get_state(state_id):
         abort(404)
 
 
-@app_views.route('/states/<state_id>', strict_slashes=False, methods=['DELETE'])
+@app_views.route('/states/<state_id>', strict_slashes=False,
+                 methods=['DELETE'])
 def delete_state(state_id):
     ''' Handles a DELTE request for state objects '''
     state = storage.get(State, state_id)
