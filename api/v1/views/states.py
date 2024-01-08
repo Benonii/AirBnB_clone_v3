@@ -5,7 +5,7 @@
 import requests
 from api.v1.views import app_views
 from models import storage
-from flask import jsonify
+from flask import jsonify, request, abort
 from models.state import State
 
 
@@ -44,13 +44,13 @@ def delete_state(state_id):
 def create_state():
     ''' Handles a POST request for state objects '''
     state = None
-    data = requests.get_json()
-    if data.is_json:
+    data = request.get_json()
+    if data:
         if 'name' not in data.keys():
             return 'Not a JSON', 400
         state = State(data)
 
-    return jsonify(state), 201
+    return jsonify(state.to_dict()), 201
 
 
 @app_views.route('/states/<state_id>', strict_slashes=False, methods=['PUT'])
@@ -61,11 +61,13 @@ def update_state(state_id):
         abort(404)
     data = request.get_json()
 
-    if data.is_json:
+    if data:
         for key, value in data.items():
             if key == 'id' or key == 'created_at' or key == 'updated_at':
                 continue
             else:
-                state[key] = value
+                setattr(state, key, value)
+
+        return jsonify(state.to_dict()), 200
     else:
         return 'Not a JSON', 400
