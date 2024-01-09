@@ -11,7 +11,7 @@ from models.city import City
 from models.place import Place
 
 
-@app_views.route('/citites/<city_id>/places', strict_slashes=False,
+@app_views.route('/cities/<city_id>/places', strict_slashes=False,
                  methods=['GET'])
 def get_places_by_city(city_id):
     '''Handles a GET request for places of city'''
