@@ -15,7 +15,7 @@ def get_users():
     '''Handles a get request for user objects'''
     users = []
     for user in storage.all(User).values():
-        states.append(user.to_dict())
+        users.append(user.to_dict())
 
     return jsonify(users)
 
@@ -48,8 +48,10 @@ def create_user():
     ''' Handles a POST request for user objects '''
     data = request.get_json()
     if data:
-        if 'name' not in data.keys():
-            return 'Not a JSON', 400
+        if 'email' not in data.keys():
+            return 'Missing email', 400
+        if 'password' not in data.keys():
+            return 'Missing password', 400
         user = User(**data)
         storage.new(user)
         storage.save()
@@ -75,6 +77,6 @@ def update_user(user_id):
                 setattr(user, key, value)
         storage.save()
 
-        return jsonify(state.to_dict()), 200
+        return jsonify(user.to_dict()), 200
     else:
         return 'Not a JSON', 400
