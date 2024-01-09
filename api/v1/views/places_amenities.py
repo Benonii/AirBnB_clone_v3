@@ -8,7 +8,7 @@ from models import storage
 from flask import jsonify, request, abort
 from models.state import State
 from models.city import City
-from models.place import Place, place_amenity
+from models.place import Place 
 from models.user import User
 from models.review import Review
 
@@ -17,7 +17,7 @@ from models.review import Review
                  methods=['GET'])
 def get_amenities_by_place(place_id):
     '''Handles a GET request for amenities of place'''
-    amenites = []
+    amenities = []
     place = storage.get(Place, place_id)
     if not place:
         abort(404)
@@ -46,7 +46,7 @@ def delete_amenities(place_id, amenity_id):
 
 @app_views.route('/api/v1/places/<place_id>/amenities/<amenity_id>', strict_slashes=False,
                  methods=['POST'])
-def link_amenity_to_place(amenity_id):
+def link_amenity_to_place(place_id, amenity_id):
     ''' Handles a POST request for amenity objects '''
     amenity = storage.get(Amenity, amenity_id)
     place = storage.get(Place, place_id)
