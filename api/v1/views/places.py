@@ -62,7 +62,7 @@ def create_place(city_id):
     data = request.get_json()
     if data:
         if 'name' not in data.keys():
-            return 'Missing name', 400i
+            return 'Missing name', 400
 
         if 'user_id' not in data.keys():
             return 'Missing user_id', 400
