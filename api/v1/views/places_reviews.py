@@ -32,7 +32,7 @@ def get_reviews_by_place(place_id):
 def get_review(review_id):
     ''' Handles a get request for a specific review object '''
     review = storage.get(Review, review_id)
-    if place:
+    if review:
         return jsonify(review.to_dict())
     else:
         abort(404)
@@ -53,7 +53,7 @@ def delete_review(review_id):
 
 @app_views.route('/places/<place_id>/reviews', strict_slashes=False,
                  methods=['POST'])
-def create_review(review_id):
+def create_review(place_id):
     ''' Handles a POST request for review objects '''
     review = None
     place = storage.get(Place, place_id)
@@ -63,8 +63,6 @@ def create_review(review_id):
 
     data = request.get_json()
     if data:
-        if 'name' not in data.keys():
-            return 'Missing name', 400
         if 'user_id' not in data.keys():
             return 'Missing user_id', 400
         if 'text' not in data.keys():
@@ -84,7 +82,7 @@ def create_review(review_id):
 @app_views.route('/reviews/<review_id>', strict_slashes=False, methods=['PUT'])
 def update_review(review_id):
     '''Handles a PUT request for review objects'''
-    review = storage.get(Reveiw, review_id)
+    review = storage.get(Review, review_id)
     if not review:
         abort(404)
     data = request.get_json()
