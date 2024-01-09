@@ -54,7 +54,9 @@ def create_state():
         storage.new(state)
         storage.save()
 
-    return jsonify(state.to_dict()), 201
+        return jsonify(state.to_dict()), 201
+    else:
+        return 'Not a JSON', 400
 
 
 @app_views.route('/states/<state_id>', strict_slashes=False, methods=['PUT'])
