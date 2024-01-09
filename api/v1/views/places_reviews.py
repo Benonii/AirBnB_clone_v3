@@ -64,7 +64,7 @@ def create_review(place_id):
     data = request.get_json()
     if data:
         if 'user_id' not in data.keys():
-            return 'Missing user_id', 400
+            return 'Missing user id', 400
         if 'text' not in data.keys():
             return 'Missing text', 400
         if 'place_id' not in data.keys() or data['place_id'] is None:
