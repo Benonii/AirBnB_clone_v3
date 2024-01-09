@@ -29,8 +29,8 @@ class User(BaseModel, Base):
 
     def __init__(self, *args, **kwargs):
         """initializes user"""
-        super().__init__(*args, **kwargs)
-
         # Hash the password using MD5
         if 'password' in kwargs and kwargs['password'] is not None:
             self.password = md5(kwargs['password'].encode()).digest()
+
+        super().__init__(*args, **kwargs)
