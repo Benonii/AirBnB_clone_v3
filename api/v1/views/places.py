@@ -9,7 +9,7 @@ from flask import jsonify, request, abort
 from models.state import State
 from models.city import City
 from models.place import Place
-
+from models.user import User
 
 @app_views.route('/cities/<city_id>/places', strict_slashes=False,
                  methods=['GET'])
@@ -27,7 +27,7 @@ def get_places_by_city(city_id):
 
 
 @app_views.route('/places/<place_id>', strict_slashes=False, methods=['GET'])
-def get_place(city_id):
+def get_place(place_id):
     ''' Handles a get request for a specific place object '''
     place = storage.get(Place, place_id)
     if place:
@@ -49,7 +49,7 @@ def delete_place(place_id):
         return jsonify({}), 200
 
 
-@app_views.route('/citites/<city_id>/places', strict_slashes=False,
+@app_views.route('/cities/<city_id>/places', strict_slashes=False,
                  methods=['POST'])
 def create_place(city_id):
     ''' Handles a POST request for place objects '''
