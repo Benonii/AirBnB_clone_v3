@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 
-'''States module'''
+'''Cities module'''
 
 import requests
 from api.v1.views import app_views
