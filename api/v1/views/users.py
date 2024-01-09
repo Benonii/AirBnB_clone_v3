@@ -32,7 +32,7 @@ def get_user(user_id):
 
 @app_views.route('/users/<user_id>', strict_slashes=False,
                  methods=['DELETE'])
-def delete_state(user_id):
+def delete_user(user_id):
     ''' Handles a DELTE request for a user object '''
     user = storage.get(User, user_id)
     if not user:
@@ -60,7 +60,7 @@ def create_user():
 
 
 @app_views.route('/users/<user_id>', strict_slashes=False, methods=['PUT'])
-def update_state(user_id):
+def update_user(user_id):
     '''Handles a PUT request for state objects'''
     user = storage.get(User, user_id)
     if not user:
