@@ -48,7 +48,9 @@ def create_state():
     if data:
         if 'name' not in data.keys():
             return 'Not a JSON', 400
-        state = State(data)
+        state = State(**data)
+        storage.new(state)
+        storage.save()
 
     return jsonify(state.to_dict()), 201
 
@@ -67,6 +69,7 @@ def update_state(state_id):
                 continue
             else:
                 setattr(state, key, value)
+        storage.save()
 
         return jsonify(state.to_dict()), 200
     else:
