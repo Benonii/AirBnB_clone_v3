@@ -64,7 +64,7 @@ def create_amenity():
                  methods=['PUT'])
 def update_amenity(amenity_id):
     '''Handles a PUT request for amenity objects'''
-    amenity = storage.get(Amenity, state_id)
+    amenity = storage.get(Amenity, amenity_id)
     if not amenity:
         abort(404)
     data = request.get_json()
