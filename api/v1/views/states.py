@@ -49,7 +49,7 @@ def create_state():
     data = request.get_json()
     if data:
         if 'name' not in data.keys():
-            return 'Not a JSON', 400
+            return 'Missing name', 400
         state = State(**data)
         storage.new(state)
         storage.save()
