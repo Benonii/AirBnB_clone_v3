@@ -14,47 +14,41 @@ def get_cities_by_state(state_id):
     '''Handles a GET request for cities of state'''
     cities = []
     state = storage.get(State, state_id)
+    if not state:
+        abort(404)
 
     for city in state.cities.values():
         cities.append(city.to_dict())
 
     return jsonify(cities)
 
-@app_views.route('/states', strict_slashes=False, methods=['GET'])
-def get_states():
-    '''Handles a get request for state objects'''
-    states = []
-    for state in storage.all(State).values():
-        states.append(state.to_dict())
 
-    return jsonify(states)
-
-
-@app_views.route('/states/<state_id>', strict_slashes=False, methods=['GET'])
-def get_state(state_id):
-    ''' Handles a get request for a specific state object '''
-    state = storage.get(State, state_id)
-    if state:
-        return jsonify(state.to_dict())
+@app_views.route('/cities/<city_id>', strict_slashes=False, methods=['GET'])
+def get_city(city_id):
+    ''' Handles a get request for a specific city object '''
+    city = storage.get(City, city_id)
+    if city:
+        return jsonify(city.to_dict())
     else:
         abort(404)
 
 
-@app_views.route('/states/<state_id>', strict_slashes=False,
+@app_views.route('/cities/<city_id>', strict_slashes=False,
                  methods=['DELETE'])
-def delete_state(state_id):
-    ''' Handles a DELTE request for state objects '''
-    state = storage.get(State, state_id)
-    if not state:
+def delete_city(city_id):
+    ''' Handles a DELTE request for a city object '''
+    city = storage.get(City, city_id)
+    if not city:
         abort(404)
     else:
-        return jsonify({})
+        storage.save()
+        return jsonify({}), 200
 
 
-@app_views.route('/states', strict_slashes=False, methods=['POST'])
-def create_state():
+@app_views.route('/cities/<state_id>/', strict_slashes=False, methods=['POST'])
+def create_city():
     ''' Handles a POST request for state objects '''
-    state = None
+    city = None
     data = request.get_json()
     if data:
         if 'name' not in data.keys():
@@ -65,7 +59,7 @@ def create_state():
 
 
 @app_views.route('/states/<state_id>', strict_slashes=False, methods=['PUT'])
-def update_state(state_id):
+def update_city(state_id):
     '''Handles a PUT request for state objects'''
     state = storage.get(State, state_id)
     if not state:
