@@ -53,6 +53,11 @@ def delete_city(city_id):
 def create_city(state_id):
     ''' Handles a POST request for state objects '''
     city = None
+    state = storage.get(State, state_id)
+
+    if not state:
+        abort(404)
+
     data = request.get_json()
     if data:
         if 'name' not in data.keys():
