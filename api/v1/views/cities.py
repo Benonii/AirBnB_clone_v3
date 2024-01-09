@@ -57,7 +57,7 @@ def create_city(state_id):
         if 'name' not in data.keys():
             return 'Missing name', 400
 
-        if 'state_id' not in data.keys() or not data['state_id']:
+        if 'state_id' not in data.keys() or data['state_id'] is None:
             data['state_id'] = state_id
 
         city = City(**data)
