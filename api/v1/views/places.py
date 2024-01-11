@@ -148,6 +148,6 @@ def places_search():
         for place in places:
             places_dict.append(place.to_dict())
 
-        return jsonify(places_dict)
+        return places_dict
     '''except Exception as e:
         return 'Not a JSON', 400'''
