@@ -108,50 +108,57 @@ def update_place(place_id):
 @app_views.route('places_search', strict_slashes=False, methods=['POST'])
 def places_search():
     '''Handles a search of palces based on state, city and amenities'''
-    if True:
-        data = None
-        if 'Content-Type' in request.headers and\
-                request.headers['Content-Type'] == 'application/json':
+    if 'Content-Type' not in request.headers:
+        places = storage.all(Place).values()
+
+    else:
+        if request.headers['Content-Type'] == 'application/json':
             data = request.json
-
-        if (data is None) or\
-                (data['states'] is None and data['cities'] is None):
-            places = storage.all(Place).values()
         else:
-            city_objs = []
-            if 'states' in data.keys():
-                if data['states'] is not None:
-                    state_ids = data['states']
-                    state_objs = []
-                    for state_id in state_ids:
-                        state_objs.append(storage.get(State, state_id))
+            return 'Not a JSON', 400
 
-                    for state in state_objs:
-                        for city in state.cities:
-                            city_objs.append(city)
+        city_objs = []
+        states_is_empty = False
+        cities_is_empty = False
+        if 'states' in data.keys():
+            if data['states'] is not None:
+                state_ids = data['states']
+                state_objs = []
+                for state_id in state_ids:
+                    state_objs.append(storage.get(State, state_id))
 
-            if 'cities' in data.keys():
-                if data['cities'] is not None:
-                    city_ids = data['cities']
-                    for city_id in city_ids:
-                        city = storage.get(City, city_id)
-                        if city not in city_objs:
-                            city_objs.append(city)
-            places = []
-            for city in city_objs:
-                for place in city.places:
-                    places.append(place)
-            if 'amenities' in data.keys():
-                amenity_ids = data['amenities']
-                for place in places:
-                    for amenity_id in amenity_ids:
-                        if amenity_id not in place.amenity_ids:
-                            places.remove(place)
+                for state in state_objs:
+                    for city in state.cities:
+                        city_objs.append(city)
+            else:
+                states_is_empty = True
 
-        places_dict = []
-        for place in places:
-            places_dict.append(place.to_dict())
+        if 'cities' in data.keys():
+            if data['cities'] is not None:
+                city_ids = data['cities']
+            for city_id in city_ids:
+                city = storage.get(City, city_id)
+                if city not in city_objs:
+                    city_objs.append(city)
+            else:
+                cities_is_empty = True
 
-        return jsonify(places_dict)
-    '''except Exception as e:
-        return 'Not a JSON\n', 400'''
+        places = []
+        for city in city_objs:
+            for place in city.places:
+                places.append(place)
+        if 'amenities' in data.keys():
+            amenity_ids = data['amenities']
+            for place in places:
+                for amenity_id in amenity_ids:
+                    if amenity_id not in place.amenity_ids:
+                        places.remove(place)
+
+        if states_is_empty and cities_is_empty:
+            places = storage.all(Place).values()
+
+    places_dict = []
+    for place in places:
+        places_dict.append(place.to_dict())
+
+    return jsonify(places_dict)
