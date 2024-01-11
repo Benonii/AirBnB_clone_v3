@@ -108,11 +108,15 @@ def update_place(place_id):
 @app_views.route('places_search', strict_slashes=False, methods=['POST'])
 def places_search():
     '''Handles a search of palces based on state, city and amenities'''
-    try:
-        data = request.get_json()
+    if True:
+        data = None
+        if 'Content-Type' in request.headers and\
+                request.headers['Content-Type'] == 'application/json':
+            data = request.json
 
-        if not data or (data['states'] is None and data['cities'] is None):
-            places = storage.all(Place)
+        if (data is None) or\
+                (data['states'] is None and data['cities'] is None):
+            places = storage.all(Place).values()
         else:
             city_objs = []
             if 'states' in data.keys():
@@ -149,5 +153,5 @@ def places_search():
             places_dict.append(place.to_dict())
 
         return jsonify(places_dict)
-    except Exception as e:
-        return 'Not a JSON', 400
+    '''except Exception as e:
+        return 'Not a JSON\n', 400'''
