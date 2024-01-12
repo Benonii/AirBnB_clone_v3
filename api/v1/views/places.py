@@ -141,8 +141,8 @@ def places_search():
                     city_ids = data['cities']
                     for city_id in city_ids:
                         city = storage.get(City, city_id)
-                    if city not in city_objs:
-                        city_objs.append(city)
+                        if city not in city_objs:
+                            city_objs.append(city)
                 else:
                     cities_is_empty = True
 
@@ -157,9 +157,10 @@ def places_search():
             if 'amenities' in data.keys():
                 amenity_ids = data['amenities']
                 for place in places:
+                    place_amenities = place.amenities
                     for amenity_id in amenity_ids:
                         amenity = storage.get(Amenity, amenity_id)
-                        if amenity not in place.amenities:
+                        if amenity not in place_amenites:
                             places.remove(place)
 
     places_dict = []
