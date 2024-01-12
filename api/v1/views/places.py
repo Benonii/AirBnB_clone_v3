@@ -156,7 +156,8 @@ def places_search():
 
             if 'amenities' in data.keys():
                 amenity_ids = data['amenities']
-                for place in places:
+                places_copy = places
+                for place in places_copy:
                     place_amenities = place.amenities
                     for amenity_id in amenity_ids:
                         amenity = storage.get(Amenity, amenity_id)
