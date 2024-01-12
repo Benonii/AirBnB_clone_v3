@@ -117,7 +117,7 @@ def places_search():
         else:
             return 'Not a JSON', 400
 
-        if data is None:
+        if data.keys() is None:
             places = storage.all(Place).values()
         else:
             city_objs = []
