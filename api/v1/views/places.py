@@ -117,49 +117,47 @@ def places_search():
         else:
             return 'Not a JSON', 400
 
-        city_objs = []
-        states_is_empty = False
-        cities_is_empty = False
-        if 'states' in data.keys():
-            if data['states'] is not None:
-                state_ids = data['states']
-                state_objs = []
-                for state_id in state_ids:
-                    state_objs.append(storage.get(State, state_id))
+        if data is None:
+            city_objs = []
+            states_is_empty = False
+            cities_is_empty = False
+            if 'states' in data.keys():
+                if data['states'] is not None:
+                    state_ids = data['states']
+                    state_objs = []
+                    for state_id in state_ids:
+                        state_objs.append(storage.get(State, state_id))
 
-                for state in state_objs:
-                    for city in state.cities:
+                    for state in state_objs:
+                        for city in state.cities:
+                            city_objs.append(city)
+                else:
+                    states_is_empty = True
+
+            if 'cities' in data.keys():
+                if data['cities'] is not None:
+                    city_ids = data['cities']
+                for city_id in city_ids:
+                    city = storage.get(City, city_id)
+                    if city not in city_objs:
                         city_objs.append(city)
-            else:
-                states_is_empty = True
+                else:
+                    cities_is_empty = True
 
-        if 'cities' in data.keys():
-            if data['cities'] is not None:
-                city_ids = data['cities']
-            for city_id in city_ids:
-                city = storage.get(City, city_id)
-                if city not in city_objs:
-                    city_objs.append(city)
-            else:
-                cities_is_empty = True
+            places = []
+            for city in city_objs:
+                for place in city.places:
+                    places.append(place)
 
-        places = []
-        for city in city_objs:
-            for place in city.places:
-                places.append(place)
+            if 'amenities' in data.keys():
+                amenity_ids = data['amenities']
+                for place in places:
+                    for amenity_id in amenity_ids:
+                        if amenity_id not in place.amenity_ids:
+                            places.remove(place)
 
-        if states_is_empty and cities_is_empty:
-            places = storage.all(Place).values()
-
-        if 'amenities' in data.keys():
-            amenity_ids = data['amenities']
-            for place in places:
-                for amenity_id in amenity_ids:
-                    if amenity_id not in place.amenity_ids:
-                        places.remove(place)
-
-        if states_is_empty and cities_is_empty:
-            places = storage.all(Place).values()
+            if (states_is_empty and cities_is_empty):
+                places = storage.all(Place).values()
 
     places_dict = []
     for place in places:
