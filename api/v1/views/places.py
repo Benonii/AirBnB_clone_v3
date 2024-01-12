@@ -158,7 +158,8 @@ def places_search():
                 amenity_ids = data['amenities']
                 for place in places:
                     for amenity_id in amenity_ids:
-                        if amenity_id not in place.amenity_ids:
+                        amenity = storage.get(Amenity, amenity_id)
+                        if amenity not in place.amenities:
                             places.remove(place)
 
     places_dict = []
