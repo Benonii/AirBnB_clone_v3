@@ -147,6 +147,10 @@ def places_search():
         for city in city_objs:
             for place in city.places:
                 places.append(place)
+
+        if states_is_empty and cities_is_empty:
+            places = storage.all(Place).values()
+
         if 'amenities' in data.keys():
             amenity_ids = data['amenities']
             for place in places:
