@@ -154,14 +154,14 @@ def places_search():
             if (states_is_empty and cities_is_empty):
                 places = storage.all(Place).values()
 
-            if 'amenities' in data.keys():
+            '''if 'amenities' in data.keys():
                 amenity_ids = data['amenities']
                 for place in places:
                     place_amenities = place.amenities
                     for amenity_id in amenity_ids:
                         amenity = storage.get(Amenity, amenity_id)
                         if amenity not in place_amenites:
-                            places.remove(place)
+                            places.remove(place)'''
 
     places_dict = []
     for place in places:
