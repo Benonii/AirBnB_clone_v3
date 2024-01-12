@@ -124,7 +124,7 @@ def places_search():
             states_is_empty = False
             cities_is_empty = False
             if 'states' in data.keys():
-                if data['states'] is not None:
+                if data['states']:
                     state_ids = data['states']
                     state_objs = []
                     for state_id in state_ids:
@@ -137,7 +137,7 @@ def places_search():
                     states_is_empty = True
 
             if 'cities' in data.keys():
-                if data['cities'] is not None:
+                if data['cities']:
                     city_ids = data['cities']
                     for city_id in city_ids:
                         city = storage.get(City, city_id)
@@ -151,17 +151,17 @@ def places_search():
                 for place in city.places:
                     places.append(place)
 
-            if (states_is_empty and cities_is_empty):
+            if states_is_empty and cities_is_empty:
                 places = storage.all(Place).values()
 
-            '''if 'amenities' in data.keys():
+            if 'amenities' in data.keys():
                 amenity_ids = data['amenities']
                 for place in places:
                     place_amenities = place.amenities
                     for amenity_id in amenity_ids:
                         amenity = storage.get(Amenity, amenity_id)
                         if amenity not in place_amenites:
-                            places.remove(place)'''
+                            places.remove(place)
 
     places_dict = []
     for place in places:
