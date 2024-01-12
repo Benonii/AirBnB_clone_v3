@@ -151,15 +151,15 @@ def places_search():
                 for place in city.places:
                     places.append(place)
 
+            if (states_is_empty and cities_is_empty):
+                places = storage.all(Place).values()
+
             if 'amenities' in data.keys():
                 amenity_ids = data['amenities']
                 for place in places:
                     for amenity_id in amenity_ids:
                         if amenity_id not in place.amenity_ids:
                             places.remove(place)
-
-            if (states_is_empty and cities_is_empty):
-                places = storage.all(Place).values()
 
     places_dict = []
     for place in places:
