@@ -160,7 +160,7 @@ def places_search():
                     place_amenities = place.amenities
                     for amenity_id in amenity_ids:
                         amenity = storage.get(Amenity, amenity_id)
-                        if amenity not in place_amenites:
+                        if amenity not in place_amenities:
                             places.remove(place)
 
     places_dict = []
